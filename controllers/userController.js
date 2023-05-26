@@ -92,19 +92,30 @@ const userLogin = async (req, res) => {
   }
 }
 const getHistory = async (req, res) => {
-  const query = req.query.new;
-  if (true) {
-    try {
-      const users = query ? await User.find().sort({ _id: 1 }).limit(2) : await User.find();
-      res.status(200).json(users);
-    } catch (err) {
-      res.status(500).json(err);
+  const userId = req.user.id;
+  try {
+    const user = await User.findById(userId).populate('history');
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  } else {
-    res.status(403).json("You are not allowed to see all users!");
+    
+    const history = user.history
+    // const history2 = history.map((item) => {
+    //   return {
+       
+    //     history: item.history,
+       
+    //   }
+    // })
+
+    
+    res.status(200).json({message: history });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 const addHistory = async (req, res) => {
   const { history } = req.body;
   const userId = req.user.id;
@@ -260,6 +271,7 @@ module.exports = {
     getAllUsers,
     loginStatus,
     addHistory,
+    getHistory
 
 
 }
