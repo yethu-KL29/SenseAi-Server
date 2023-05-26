@@ -2,6 +2,8 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const History = require('../models/historyModel');
+const mongoose = require('mongoose');
 
 require('dotenv').config()
 
@@ -38,8 +40,7 @@ const userSignup = async (req, res) => {
     });
 
     await user.save();
-
-    res.status(200).json({
+      res.status(200).json({
       message: user,
     });
   } catch (error) {
@@ -82,6 +83,7 @@ const userLogin = async (req, res) => {
 
 
     })
+    // const { password, ...info } = user._doc;
     return res.status(200).json({ status: "200", user: existingUser, token })
   } catch (error) {
     res.status(500).json({
@@ -89,6 +91,55 @@ const userLogin = async (req, res) => {
     });
   }
 }
+const getHistory = async (req, res) => {
+  const query = req.query.new;
+  if (true) {
+    try {
+      const users = query ? await User.find().sort({ _id: 1 }).limit(2) : await User.find();
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("You are not allowed to see all users!");
+  }
+};
+
+const addHistory = async (req, res) => {
+  const { history } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const newUser = await User.findById(userId);
+
+    if (!newUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const newHistory = new History({
+      user: userId,
+      history
+    });
+
+    
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    newUser.history.push(newHistory);
+    await newUser.save({ session });
+    await newHistory.save({ session });
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({
+      message: 'History added successfully',
+      newHistory
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 
 
@@ -187,23 +238,18 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginStatus = async (req, res) => {
-    let loginStatus = true;
-    try {
-        const token = req.cookies.token;
-        if (!token) {
-            return res.status(200).json({ status: "200", message: "User not authenticated",
-        loginStatus: false })
-             
-        }
-    } catch (error) {
-        res.status(500).json({
-
-            message: error.message,
-
-        });
-    }
-        
-}
+  const cookie = req.headers.cookie;
+      const token = cookie.split("=")[1];
+  if (!token) {
+    return res.json(false);
+  }
+  // Verify Token
+  const verified = jwt.verify(token, process.env.JWT_SECRETKEY);
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+};
 
 
 module.exports = {
@@ -212,7 +258,8 @@ module.exports = {
     logout,
     resetPassword,
     getAllUsers,
-    loginStatus
+    loginStatus,
+    addHistory,
 
 
 }
