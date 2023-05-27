@@ -16,12 +16,9 @@ const googleSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
-});
+ 
+}, {timestamps: true});
 
 const Google = mongoose.model('Google', googleSchema);
 

@@ -30,8 +30,7 @@ passportRouter.get('/login/success', async(req, res) => {
             name: req.user.displayName,
             email: req.user.emails[0].value,
             googleId: req.user.id,
-            createdAt: req.user._json.created_at,
-            profilePicture: req.user._json.profile_image_url_https
+            profilePicture: req.user.photos[0].value
         });
         
         res.status(200).json({
