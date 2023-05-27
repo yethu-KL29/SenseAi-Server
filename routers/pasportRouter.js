@@ -3,7 +3,7 @@ const passport = require('passport');
 const Google = require('../models/googleModel');
 
 
-passportRouter.get('/google/login', passport.authenticate('google',
+passportRouter.get('/google/callback', passport.authenticate('google',
     {
         successRedirect: '/auth/login/success',
         failureRedirect: '/auth/login/failure'
@@ -23,7 +23,7 @@ passportRouter.get('/login/failure', (req, res) => {
 
 passportRouter.get('/login/success', async(req, res) => {
     if (!req.user) {
-        res.redirect('/auth/login/failure');
+        res.redirect('/auth/callback/failure');
     } else {
         
         const googleUser = new Google({
