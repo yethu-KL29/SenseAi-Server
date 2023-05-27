@@ -2,10 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-// const passport = require('passport');
+const passport = require('passport');
 const cookieSession = require('cookie-session');
-// const passportSetup = require('./pasport');
-// const pasportRouter = require('./routers/pasportRouter');
+require('./passportApi');
+const pasportRouter = require('./routers/pasportRouter');
 
 
 const userRouter = require('./routers/userRouter');
@@ -27,12 +27,12 @@ app.use(
 	})
 );
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
-// app.use('/auth', pasportRouter);
+app.use('/auth', pasportRouter);
 app.use('/', userRouter);
 
 
