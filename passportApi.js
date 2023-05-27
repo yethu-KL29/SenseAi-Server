@@ -8,7 +8,7 @@ passport.use(
 		{
 			clientID: process.env.CLIENT_ID,
 			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: "https://senseai-api.onrender.com/auth/google/callback",
+			callbackURL: "https://senseai-api.onrender.com/auth/google/login",
 			scope: ["profile", "email"],
 		},
 		function (accessToken, refreshToken, profile, callback) {
