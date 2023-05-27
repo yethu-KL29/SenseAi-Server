@@ -24,12 +24,16 @@ passportRouter.get('/login/success', (req, res) => {
     if (!req.user) {
         res.redirect('/auth/callback/failure');
     } else {
-
         
-        res.status(200).json({
-            message: 'User authenticated successfully',
-            user: req.user
-        });
+        res.send(`Welcome ${req.user.emails[0].value}`);
+        console.log(req.user);
+   
+
+        // res.status(200).json({
+        //     message: 'User authenticated successfully',
+        //     user: req.user
+        // });
+        console.log(req.user)
 
     }
 });
