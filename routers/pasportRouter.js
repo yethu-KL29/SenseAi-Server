@@ -36,7 +36,7 @@ passportRouter.get('/login/success', async(req, res) => {
         
         res.status(200).json({
             message: 'User authenticated successfully',
-            user: req.user.name
+            user: req.user
         });
         console.log(req.user.displayName)
 
