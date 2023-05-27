@@ -29,9 +29,9 @@ passportRouter.get('/login/success', (req, res) => {
 
         res.status(200).json({
             message: 'User authenticated successfully',
-            user: req.user
+            user: req.user.name
         });
-        console.log(req.user.name)
+        // console.log(req.user.name)
 
     }
 });
