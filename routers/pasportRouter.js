@@ -3,6 +3,9 @@ const passport = require('passport');
 const Google = require('../models/googleModel');
 
 
+passportRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+
 passportRouter.get('/google/callback', passport.authenticate('google',
     {
         successRedirect: '/auth/login/success',

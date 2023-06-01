@@ -250,16 +250,11 @@ const getAllUsers = async (req, res) => {
 
 const loginStatus = async (req, res) => {
   const cookie = req.headers.cookie;
-      const token = cookie.split("=")[1];
-  if (!token) {
-    return res.json(false);
-  }
-  // Verify Token
-  const verified = jwt.verify(token, process.env.JWT_SECRETKEY);
-  if (verified) {
+  if(cookie){
     return res.json(true);
   }
   return res.json(false);
+   
 };
 
 
