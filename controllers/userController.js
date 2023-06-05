@@ -11,7 +11,11 @@ require('dotenv').config()
 
 const userSignup = async (req, res) => {
   const { username, password, email } = req.body;
-
+  const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRETKEY, {
+      expiresIn: '30d'
+    })
+  }
   // Regular expression for email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,6 +42,16 @@ const userSignup = async (req, res) => {
       password: hashedPassword,
       otp,
     });
+    const token = generateToken(user._id)
+
+    res.cookie('token', token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 30000),
+      httpOnly: true,
+      sameSite: 'none',
+
+
+    })
 
     await user.save();
       res.status(200).json({
@@ -249,12 +263,16 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginStatus = async (req, res) => {
-  const cookie = req.headers.cookie;
-  if(cookie){
-    return res.json(true);
+  try {
+    const cookie = req.headers.cookie;
+    if (cookie) {
+      return res.json(true);
+    }
+    return res.json(false);
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
-  return res.json(false);
-   
 };
 
 
