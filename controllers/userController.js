@@ -52,15 +52,16 @@ const userSignup = async (req, res) => {
 
 
     })
-    
+    const cookie = req.headers.cookie;
     await user.save();
       res.status(200).json({
-      message: user,
+      message: user,cookie
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: error.message,
+      
     });
   }
 };
