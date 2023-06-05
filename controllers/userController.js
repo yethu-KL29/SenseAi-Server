@@ -264,19 +264,20 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginStatus = async (req, res) => {
-  try {
-    const cookie = req.headers.cookie;
-    if(!cookie) {
-      return res.json("u need to authenticate");
-    }
+  // try {
+  //   const cookie = req.headers.cookie;
+  //   if(!cookie) {
+  //     return res.json("u need to authenticate");
+  //   }
    
-      return res.json(true);
+  //     return res.json(true);
     
    
-  } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
+  // } catch (error) {
+  //   console.error('Error occurred:', error);
+  //   return res.status(500).json({ error: 'Internal server error' });
+  // }
+  return res.json(true);
 };
 
 
