@@ -109,23 +109,28 @@ const userLogin = async (req, res) => {
 const getHistory = async (req, res) => {
   const userId = req.user.id;
   try {
-    const user = await User.findById(userId).populate('history');
+    const user = await User.findById(userId).populate({
+      path: 'history',
+      options: {
+        sort: { createdAt: 'desc' },
+        limit: 10
+  }});
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     
     const history = user.history
-    // const history2 = history.map((item) => {
-    //   return {
+    const history2 = history.map((item) => {
+      return {
        
-    //     history: item.history,
+        history: item.history,
        
-    //   }
-    // })
+      }
+    })
 
     
-    res.status(200).json({message: history });
+    res.status(200).json({message: history2 });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal server error' });
