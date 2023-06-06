@@ -12,7 +12,7 @@ router.post('/resetPassword',verify, resetPassword);
 router.get('/getAllUsers', getAllUsers);
 router.get("/loginStatus",loginStatus)
 router.post('/addHistory',verify, addHistory);
- router.get('/getHistory',verify, getHistory);
+ router.post('/getHistory',verify, getHistory);
 
 
 
