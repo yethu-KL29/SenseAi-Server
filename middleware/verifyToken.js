@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 
 const verifyToken = (req, res, next) => {
-    const cookie = req.headers.cookie;
+    const {cookie} = req.body ;
     if(!cookie){
         return res.status(401).json({
             message: 'You need to Authenticate'
