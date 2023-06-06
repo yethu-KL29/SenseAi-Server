@@ -113,7 +113,7 @@ const getHistory = async (req, res) => {
       path: 'history',
       options: {
         sort: { createdAt: 'desc' },
-        limit: 10
+        limit: 5
   }});
     
     if (!user) {
