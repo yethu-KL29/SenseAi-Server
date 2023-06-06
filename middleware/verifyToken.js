@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
     const {token} = req.body ;
-    
+    console.log(token)
     if (!token) {
         return res.status(401).json({
             message: 'You need to Authenticate'
