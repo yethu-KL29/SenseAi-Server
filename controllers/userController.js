@@ -185,11 +185,13 @@ const logout = async (req, res, next) => {
   })
   return res.status(200).json({ msg: "logout sucessfully" })
 }
+
+
 const pass = process.env.EMAIL_PASS;
 const user_email = process.env.EMAIL_USER;
 const transporter = nodemailer.createTransport({
   service: 'outlook',
-  host:'smtp-mail.outlook.com',
+  host: "smtp.ethereal.email",
   port: 587,
   secure: false,
   auth: {
@@ -202,6 +204,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const resetPassword = async (req, res, next) => {
+  let testAccount = await nodemailer.createTestAccount();
+
   const { email } = req.body;
   let user;
   if (!email) {
