@@ -8,7 +8,7 @@ const { userSignup,userLogin,logout,resetPassword,
 router.post('/signup', userSignup);
 router.post('/login', userLogin);
 router.post('/logout', logout);
-router.post('/resetPassword',verify, resetPassword);
+router.post('/resetPassword', resetPassword);
 router.get('/getAllUsers', getAllUsers);
 router.get("/loginStatus",loginStatus)
 router.post('/addHistory',verify, addHistory);
