@@ -192,8 +192,8 @@ const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   secure: false,
   auth: {
-    user: user_email,
-    pass: pass,
+    user: "yethukichu55@gmail.com",
+    pass: "@Onlineclass",
   },
   tls: {
     rejectUnauthorized: false
@@ -213,7 +213,7 @@ const resetPassword = async (req, res, next) => {
     }
     if (user.otp) {
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: "yethukichu55@gmail.com",
         to: email,
         subject: 'Reset Password',
         text: `this is the 4 digit otp ${user.otp}`
@@ -231,7 +231,7 @@ const resetPassword = async (req, res, next) => {
       const newOtp = Math.floor(Math.random() * 9000) + 1000;
       await User.findByIdAndUpdate({ _id: user._id }, { otp: newOtp });
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: "yethukichu55@gmail.com",
         to: email,
         subject: 'Reset Password',
         text: `this is the 4 digit otp ${newOtp}`
