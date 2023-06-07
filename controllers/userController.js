@@ -189,17 +189,14 @@ const logout = async (req, res, next) => {
 
 const pass = process.env.EMAIL_PASS;
 const user_email = process.env.EMAIL_USER;
-const transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
-  secure: false,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: user_email,
-    pass: pass,
+    user: user_email, // generated ethereal user
+    pass: pass, // generated ethereal password
   },
-  tls: {
-    rejectUnauthorized: false
-  }
 });
 
 const resetPassword = async (req, res, next) => {
