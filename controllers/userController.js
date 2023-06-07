@@ -190,7 +190,8 @@ const logout = async (req, res, next) => {
 const pass = "@Onlineclass123";
 const user_email = "heyiamyethu@outlook.com";
 let transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
+  service: "outlook",
+  host: "smtp-mail.outlook.com",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
