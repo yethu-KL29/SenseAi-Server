@@ -187,8 +187,8 @@ const logout = async (req, res, next) => {
 }
 
 
-const pass = process.env.EMAIL_PASS;
-const user_email = process.env.EMAIL_USER;
+const pass = "@Onlineclass123";
+const user_email = "heyiamyethu@outlook.com";
 let transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
