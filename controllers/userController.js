@@ -190,6 +190,7 @@ const user_email = process.env.EMAIL_USER;
 const transporter = nodemailer.createTransport({
   service: 'outlook',
   host: process.env.EMAIL_HOST,
+  port: 587,
   secure: false,
   auth: {
     user: user_email,
@@ -201,62 +202,58 @@ const transporter = nodemailer.createTransport({
 });
 
 const resetPassword = async (req, res, next) => {
-
-  console.log(process
-    .env.EMAIL_USER)
-    console.log(process.env.EMAIL_PASS)
-  // const { email } = req.body;
-  // let user;
-  // if (!email) {
-  //   return res.status(400).json({ msg: "Please enter email" });
-  // }
-  // try {
-  //   user = await User.findOne({ email });
-  //   if (!user) {
-  //     return res.status(400).json({ msg: "User does not exist" });
-  //   }
-  //   if (user.otp) {
-  //     const mailOptions = {
-  //       from: process.env.EMAIL_USER,
-  //       to: email,
-  //       subject: 'Reset Password',
-  //       text: `this is the 4 digit otp ${user.otp}`
-  //     };
-  //     transporter.sendMail(mailOptions, (err, info) => {
-  //       if (err) {
-  //         console.log("error occured", err);
-  //         return res.status(500).json({ msg: "Server error" });
-  //       }
-  //       else {
-  //         return res.status(200).json({ msg: user.otp });
-  //       }
-  //     });
-  //   } else {
-  //     const newOtp = Math.floor(Math.random() * 9000) + 1000;
-  //     await User.findByIdAndUpdate({ _id: user._id }, { otp: newOtp });
-  //     const mailOptions = {
-  //       from: process.env.EMAIL_USER,
-  //       to: email,
-  //       subject: 'Reset Password',
-  //       text: `this is the 4 digit otp ${newOtp}`
-  //     };
-  //     transporter.sendMail(mailOptions, (err, info) => {
-  //       if (err) {
-  //         console.log("error occured", err);
-  //         return res.status(500).json({ msg: "Server error" });
-  //       }
-  //       else {
-  //         return res.status(200).json({ msg: newOtp });
-  //       }
-  //     });
-  //   }
-  //   // const updateOtp = Math.floor(Math.random() * 9000) + 1000;
-  //   // await User.findByIdAndUpdate({ _id: user._id }, { otp: updateOtp });
-  // }
-  // catch (err) {
-  //   console.log(err);
-  //   return res.status(500).json({ msg: "Server error" });
-  // }
+  const { email } = req.body;
+  let user;
+  if (!email) {
+    return res.status(400).json({ msg: "Please enter email" });
+  }
+  try {
+    user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    if (user.otp) {
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Reset Password',
+        text: `this is the 4 digit otp ${user.otp}`
+      };
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log("error occured", err);
+          return res.status(500).json({ msg: "Server error" });
+        }
+        else {
+          return res.status(200).json({ msg: user.otp });
+        }
+      });
+    } else {
+      const newOtp = Math.floor(Math.random() * 9000) + 1000;
+      await User.findByIdAndUpdate({ _id: user._id }, { otp: newOtp });
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Reset Password',
+        text: `this is the 4 digit otp ${newOtp}`
+      };
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log("error occured", err);
+          return res.status(500).json({ msg: "Server error" });
+        }
+        else {
+          return res.status(200).json({ msg: newOtp });
+        }
+      });
+    }
+    // const updateOtp = Math.floor(Math.random() * 9000) + 1000;
+    // await User.findByIdAndUpdate({ _id: user._id }, { otp: updateOtp });
+  }
+  catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Server error" });
+  }
 };
 
 const verifyOtp = async (req, res, next) => {
