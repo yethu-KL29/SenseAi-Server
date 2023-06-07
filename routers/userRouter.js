@@ -3,7 +3,8 @@ const verify = require('../middleware/verifyToken')
 const { userSignup,userLogin,logout,resetPassword,
     getAllUsers,
     loginStatus,
-    addHistory,getHistory} = require('../controllers/userController');
+    addHistory,getHistory,
+verifyOtp,updatePassword} = require('../controllers/userController');
 
 router.post('/signup', userSignup);
 router.post('/login', userLogin);
@@ -13,6 +14,8 @@ router.get('/getAllUsers', getAllUsers);
 router.get("/loginStatus",loginStatus)
 router.post('/addHistory',verify, addHistory);
  router.post('/getHistory',verify, getHistory);
+router.post('/verifyOtp', verifyOtp);
+router.post('/updatePassword', updatePassword);
 
 
 

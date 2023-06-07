@@ -246,14 +246,69 @@ const resetPassword = async (req, res, next) => {
         }
       });
     }
-    const updateOtp = Math.floor(Math.random() * 9000) + 1000;
-    await User.findByIdAndUpdate({ _id: user._id }, { otp: updateOtp });
+    // const updateOtp = Math.floor(Math.random() * 9000) + 1000;
+    // await User.findByIdAndUpdate({ _id: user._id }, { otp: updateOtp });
   }
   catch (err) {
     console.log(err);
     return res.status(500).json({ msg: "Server error" });
   }
 };
+
+const verifyOtp = async (req, res, next) => {
+  const { email, otp } = req.body;
+  let user;
+
+  if (!email) {
+    return res.status(400).json({ msg: "Please enter email" });
+  }
+
+  try {
+    user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+
+    if (user.otp !== otp) {
+      return res.status(400).json({ msg: "Invalid OTP" });
+    }
+
+      res.status(200).json({ msg: "OTP verified successfully" });
+      await User.findByIdAndUpdate({_id:user._id}, { otp: "" });
+   
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const updatePassword = async (req, res, next) => {
+  const { email, password } = req.body;
+  let user;
+  if (!email) {
+    return res.status(400).json({ msg: "Please enter email" });
+  }
+  try {
+
+    user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const hashPassword = await bcrypt.hashsync(password);
+    await user.findByIdAndUpdate({ _id: user._id }, { password: hashPassword });
+
+    return res.status(200).json({ msg: "password updated" });
+  }
+  catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+
+ 
+
 
 const getAllUsers = async (req, res) => {
   try {
@@ -297,7 +352,10 @@ module.exports = {
     getAllUsers,
     loginStatus,
     addHistory,
-    getHistory
+    getHistory,
+    verifyOtp,
+    updatePassword
+
 
 
 }
