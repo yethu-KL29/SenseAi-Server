@@ -204,6 +204,7 @@ const resetPassword = async (req, res, next) => {
 
   console.log(process
     .env.EMAIL_USER)
+    console.log(process.env.EMAIL_PASS)
   // const { email } = req.body;
   // let user;
   // if (!email) {
