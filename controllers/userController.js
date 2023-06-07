@@ -190,7 +190,6 @@ const logout = async (req, res, next) => {
 const pass = process.env.EMAIL_PASS;
 const user_email = process.env.EMAIL_USER;
 const transporter = nodemailer.createTransport({
-  service: 'outlook',
   host: "smtp.ethereal.email",
   port: 587,
   secure: false,
@@ -204,8 +203,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const resetPassword = async (req, res, next) => {
-  let testAccount = await nodemailer.createTestAccount();
-
   const { email } = req.body;
   let user;
   if (!email) {
@@ -218,17 +215,16 @@ const resetPassword = async (req, res, next) => {
     }
     if (user.otp) {
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: user_email,
         to: email,
         subject: 'Reset Password',
-        text: `this is the 4 digit otp ${user.otp}`
+        text: `This is the 4-digit OTP: ${user.otp}`
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.log("error occured", err);
+          console.log("Error occurred", err);
           return res.status(500).json({ msg: "Server error" });
-        }
-        else {
+        } else {
           return res.status(200).json({ msg: user.otp });
         }
       });
@@ -236,25 +232,21 @@ const resetPassword = async (req, res, next) => {
       const newOtp = Math.floor(Math.random() * 9000) + 1000;
       await User.findByIdAndUpdate({ _id: user._id }, { otp: newOtp });
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: user_email,
         to: email,
         subject: 'Reset Password',
-        text: `this is the 4 digit otp ${newOtp}`
+        text: `This is the 4-digit OTP: ${newOtp}`
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.log("error occured", err);
+          console.log("Error occurred", err);
           return res.status(500).json({ msg: "Server error" });
-        }
-        else {
+        } else {
           return res.status(200).json({ msg: newOtp });
         }
       });
     }
-    // const updateOtp = Math.floor(Math.random() * 9000) + 1000;
-    // await User.findByIdAndUpdate({ _id: user._id }, { otp: updateOtp });
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(500).json({ msg: "Server error" });
   }
