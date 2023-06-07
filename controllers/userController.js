@@ -189,7 +189,7 @@ const pass = process.env.EMAIL_PASS;
 const user_email = process.env.EMAIL_USER;
 const transporter = nodemailer.createTransport({
   service: 'outlook',
-  host:'https://senseai-api.onrender.com',
+  host:'smtp-mail.outlook.com',
   port: 587,
   secure: false,
   auth: {
