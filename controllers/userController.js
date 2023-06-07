@@ -188,15 +188,15 @@ const logout = async (req, res, next) => {
 
 
 const pass = "@Onlineclass123";
-const user_email = "heyiamyethu@outlook.com";
+const user_email = "yethukichu55@gmail.com";
 let transporter = nodemailer.createTransport({
   service: "outlook",
   host: "smtp-mail.outlook.com",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: "heyiamyethu@outlook.com", // generated ethereal user
-    pass: "@Onlineclass123", // generated ethereal password
+    user: "yethukichu55@gmail.com", // generated ethereal user
+    pass: "@Onlineclass", // generated ethereal password
   },
 });
 
