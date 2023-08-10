@@ -255,7 +255,7 @@ const resetPassword = async (req, res, next) => {
 const verifyOtp = async (req, res, next) => {
   const { email, otp } = req.body;
   let user;
-
+ //verify
   if (!email) {
     return res.status(400).json({ msg: "Please enter email" });
   }
