@@ -213,6 +213,7 @@ const resetPassword = async (req, res, next) => {
     }
     if (user.otp) {
       const mailOptions = {
+        host: "smtp-mail.outlook.com",
         from: user_email,
         to: email,
         subject: 'Reset Password',
@@ -230,6 +231,7 @@ const resetPassword = async (req, res, next) => {
       const newOtp = Math.floor(Math.random() * 9000) + 1000;
       await User.findByIdAndUpdate({ _id: user._id }, { otp: newOtp });
       const mailOptions = {
+        host: "smtp-mail.outlook.com",
         from: user_email,
         to: email,
         subject: 'Reset Password',
